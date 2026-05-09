@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Liko Studio | בניית אתרים שמוכרים</title>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #080b10;
+      --surface:  #0e1219;
+      --card:     #131820;
+      --border:   rgba(255,255,255,.07);
+      --purple:   #7c3aed;
+      --violet:   #a855f7;
+      --pink:     #ec4899;
+      --cyan:     #06b6d4;
+      --white:    #ffffff;
+      --text:     rgba(255,255,255,.85);
+      --muted:    rgba(255,255,255,.4);
+      --r:        14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Heebo', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 9px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 200;
+      padding: 0 6vw; height: 68px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(8,11,16,.85);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-size: 1.3rem; font-weight: 900; letter-spacing: -1px;
+      text-decoration: none; color: var(--white);
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .logo-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      display: inline-block;
+      box-shadow: 0 0 12px var(--purple);
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--muted); font-size: .9rem;
+      font-weight: 500; transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-btn {
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      color: var(--white); padding: .5rem 1.4rem; border-radius: 50px;
+      text-decoration: none; font-weight: 700; font-size: .88rem;
+      transition: opacity .2s, transform .15s;
+      box-shadow: 0 0 20px rgba(124,58,237,.4);
+    }
+    .nav-btn:hover { opacity: .85; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 120px 6vw 80px;
+      position: relative; overflow: hidden;
+    }
+
+    /* animated gradient orbs */
+    .orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); opacity: .18; animation: drift 12s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .orb-1 { width: 600px; height: 600px; background: var(--purple); top: -150px; right: -100px; animation-delay: 0s; }
+    .orb-2 { width: 400px; height: 400px; background: var(--pink);   bottom: 0;    left: -80px;  animation-delay: -4s; }
+    .orb-3 { width: 300px; height: 300px; background: var(--cyan);   top: 40%;     left: 40%;    animation-delay: -8s; }
+
+    @keyframes drift {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33%      { transform: translate(30px,-40px) scale(1.05); }
+      66%      { transform: translate(-20px,30px) scale(.97); }
+    }
+
+    /* grid overlay */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .hero-inner { position: relative; max-width: 740px; }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: .5rem;
+      border: 1px solid rgba(124,58,237,.5);
+      background: rgba(124,58,237,.12);
+      color: #c084fc; padding: .35rem 1rem; border-radius: 50px;
+      font-size: .82rem; font-weight: 600; margin-bottom: 1.8rem;
+    }
+    .hero-tag span { width: 6px; height: 6px; border-radius: 50%; background: #c084fc; display: inline-block; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+
+    .hero h1 {
+      font-size: clamp(2.6rem, 6vw, 4.2rem);
+      font-weight: 900; line-height: 1.1;
+      color: var(--white); letter-spacing: -1.5px;
+      margin-bottom: 1.4rem;
+    }
+    .hero h1 .grad {
+      background: linear-gradient(135deg, #a78bfa, #ec4899, #06b6d4);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.1rem; color: var(--muted);
+      max-width: 520px; margin-bottom: 2.4rem; line-height: 1.8;
+    }
+
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+    .btn-glow {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      color: var(--white); padding: .9rem 2.2rem; border-radius: 50px;
+      text-decoration: none; font-weight: 700; font-size: 1rem;
+      box-shadow: 0 0 30px rgba(124,58,237,.5);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .btn-glow:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(124,58,237,.7); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: .5rem;
+      color: var(--muted); padding: .9rem 1.8rem; border-radius: 50px;
+      text-decoration: none; font-weight: 600; font-size: .95rem;
+      border: 1px solid var(--border);
+      transition: color .2s, border-color .2s;
+    }
+    .btn-ghost:hover { color: var(--white); border-color: rgba(255,255,255,.2); }
+
+    .hero-social-proof {
+      margin-top: 3.5rem; padding-top: 2.5rem;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; gap: 2.5rem; flex-wrap: wrap;
+    }
+    .sp-avatars { display: flex; }
+    .sp-avatars span {
+      width: 38px; height: 38px; border-radius: 50%;
+      border: 2px solid var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .75rem; font-weight: 700; color: var(--white);
+      margin-left: -10px;
+    }
+    .sp-text strong { display: block; color: var(--white); font-size: .95rem; }
+    .sp-text span { color: var(--muted); font-size: .82rem; }
+
+    .sp-divider { width: 1px; height: 36px; background: var(--border); }
+
+    .sp-stat { text-align: center; }
+    .sp-stat strong { display: block; font-size: 1.5rem; font-weight: 800; color: var(--white); }
+    .sp-stat span { color: var(--muted); font-size: .8rem; }
+
+    /* ── SECTION BASE ── */
+    section { padding: 100px 6vw; }
+    .s-label {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .78rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--violet);
+      margin-bottom: .8rem;
+    }
+    .s-label::before { content: ''; width: 20px; height: 2px; background: var(--violet); display: inline-block; }
+    .s-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 900; color: var(--white);
+      line-height: 1.15; letter-spacing: -.5px;
+      margin-bottom: .7rem;
+    }
+    .s-sub { color: var(--muted); font-size: 1rem; max-width: 500px; }
+
+    /* ── SERVICES ── */
+    .services { background: var(--surface); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5px; /* gap via border trick */
+      margin-top: 3.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .svc-card {
+      background: var(--card);
+      padding: 2.2rem;
+      transition: background .25s;
+      position: relative; overflow: hidden;
+    }
+    .svc-card::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(124,58,237,.06), transparent);
+      opacity: 0; transition: opacity .3s;
+    }
+    .svc-card:hover { background: #181f2c; }
+    .svc-card:hover::after { opacity: 1; }
+
+    .svc-icon-wrap {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; margin-bottom: 1.4rem;
+      position: relative;
+    }
+    .svc-icon-wrap.p { background: rgba(124,58,237,.15); }
+    .svc-icon-wrap.c { background: rgba(236,72,153,.15); }
+    .svc-icon-wrap.s { background: rgba(6,182,212,.15); }
+    .svc-icon-wrap.m { background: rgba(251,146,60,.15); }
+    .svc-icon-wrap.b { background: rgba(52,211,153,.15); }
+    .svc-icon-wrap.a { background: rgba(167,139,250,.15); }
+
+    .svc-card h3 { font-size: 1.1rem; font-weight: 700; color: var(--white); margin-bottom: .5rem; }
+    .svc-card p { font-size: .88rem; color: var(--muted); line-height: 1.7; }
+    .svc-arrow {
+      margin-top: 1.2rem; color: var(--violet); font-size: .85rem;
+      font-weight: 600; display: inline-flex; align-items: center; gap: .3rem;
+      transition: gap .2s;
+    }
+    .svc-card:hover .svc-arrow { gap: .6rem; }
+
+    /* ── PORTFOLIO ── */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem; margin-top: 3.5rem;
+    }
+    .port-card {
+      border-radius: var(--r); overflow: hidden;
+      border: 1px solid var(--border);
+      position: relative; group: true;
+      cursor: pointer;
+    }
+    .port-visual {
+      height: 220px; position: relative;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .port-visual .mock {
+      width: 75%; background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 8px; padding: 12px;
+      position: relative; z-index: 1;
+    }
+    .mock-bar { display: flex; gap: 5px; margin-bottom: 8px; }
+    .mock-bar span { width: 8px; height: 8px; border-radius: 50%; }
+    .mock-lines { display: flex; flex-direction: column; gap: 5px; }
+    .mock-line { height: 6px; border-radius: 3px; background: rgba(255,255,255,.1); }
+    .mock-line.w80 { width: 80%; }
+    .mock-line.w60 { width: 60%; }
+    .mock-line.w40 { width: 40%; }
+    .mock-line.w90 { width: 90%; }
+
+    .port-card-1 .port-visual { background: linear-gradient(135deg, #1a0533, #2d1060); }
+    .port-card-2 .port-visual { background: linear-gradient(135deg, #001a2e, #003356); }
+    .port-card-3 .port-visual { background: linear-gradient(135deg, #1a0020, #3d0046); }
+    .port-card-4 .port-visual { background: linear-gradient(135deg, #0d1f0d, #1a3c1a); }
+
+    .port-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,.5);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity .3s;
+    }
+    .port-card:hover .port-overlay { opacity: 1; }
+    .port-overlay-btn {
+      background: var(--white); color: var(--bg);
+      padding: .5rem 1.2rem; border-radius: 50px;
+      font-weight: 700; font-size: .85rem;
+    }
+
+    .port-info { padding: 1.4rem; background: var(--card); }
+    .port-tag {
+      font-size: .75rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--violet); margin-bottom: .4rem;
+    }
+    .port-info h3 { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: .3rem; }
+    .port-info p { font-size: .83rem; color: var(--muted); }
+
+    /* big card spans 2 cols */
+    .port-card-wide {
+      grid-column: span 2;
+    }
+    .port-card-wide .port-visual { height: 300px; }
+
+    /* ── PROCESS ── */
+    .process { background: var(--surface); }
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0; margin-top: 3.5rem; position: relative;
+    }
+    .process-steps::before {
+      content: '';
+      position: absolute; top: 32px; right: 8%; left: 8%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), var(--border), transparent);
+    }
+    .step { padding: 0 1rem; text-align: center; position: relative; }
+    .step-num {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; font-weight: 900; color: var(--violet);
+      margin: 0 auto 1.2rem; position: relative; z-index: 1;
+      transition: background .2s, border-color .2s;
+    }
+    .step:hover .step-num {
+      background: rgba(124,58,237,.2); border-color: var(--purple);
+    }
+    .step h3 { font-size: .95rem; font-weight: 700; color: var(--white); margin-bottom: .4rem; }
+    .step p { font-size: .83rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1.5rem; margin-top: 3.5rem;
+    }
+    .t-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 2rem;
+      transition: border-color .2s, transform .2s;
+    }
+    .t-card:hover { border-color: rgba(124,58,237,.4); transform: translateY(-3px); }
+    .t-stars { color: #fbbf24; font-size: .9rem; margin-bottom: 1rem; letter-spacing: 2px; }
+    .t-text { font-size: .93rem; color: var(--text); line-height: 1.75; margin-bottom: 1.4rem; font-style: italic; }
+    .t-author { display: flex; align-items: center; gap: .8rem; }
+    .t-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: .85rem; color: var(--white); flex-shrink: 0;
+    }
+    .t-name { font-weight: 700; font-size: .9rem; color: var(--white); }
+    .t-role { font-size: .78rem; color: var(--muted); }
+
+    /* ── CTA BAND ── */
+    .cta-band {
+      background: linear-gradient(135deg, #1a0a2e 0%, #0e1219 50%, #001225 100%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-band::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(124,58,237,.2) 0%, transparent 65%);
+    }
+    .cta-band-inner { position: relative; }
+    .cta-band h2 {
+      font-size: clamp(1.9rem, 4vw, 3rem);
+      font-weight: 900; color: var(--white);
+      letter-spacing: -.5px; margin-bottom: .8rem;
+    }
+    .cta-band p { color: var(--muted); margin-bottom: 2rem; font-size: 1rem; }
+
+    /* ── CONTACT ── */
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1.3fr;
+      gap: 4rem; margin-top: 3.5rem; align-items: start;
+    }
+    .contact-details h3 { font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: 1.5rem; }
+    .cinfo-list { display: flex; flex-direction: column; gap: 1.1rem; }
+    .cinfo-item { display: flex; align-items: center; gap: .9rem; }
+    .cinfo-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: rgba(124,58,237,.15); border: 1px solid rgba(124,58,237,.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .cinfo-text strong { display: block; font-size: .8rem; color: var(--muted); font-weight: 500; }
+    .cinfo-text span { font-size: .95rem; color: var(--white); font-weight: 600; }
+
+    .contact-form {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 2.2rem;
+      display: flex; flex-direction: column; gap: 1.1rem;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .fg { display: flex; flex-direction: column; gap: .4rem; }
+    .fg label { font-size: .82rem; font-weight: 600; color: var(--muted); }
+    .fg input, .fg select, .fg textarea {
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--white); padding: .8rem 1rem;
+      border-radius: 8px; font-family: 'Heebo', sans-serif;
+      font-size: .92rem; outline: none; transition: border-color .2s;
+      resize: none; direction: rtl;
+    }
+    .fg input:focus, .fg select:focus, .fg textarea:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px rgba(124,58,237,.12);
+    }
+    .fg select option { background: var(--card); }
+    .form-btn {
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      color: var(--white); border: none; padding: .9rem;
+      border-radius: 8px; font-family: 'Heebo', sans-serif;
+      font-size: 1rem; font-weight: 700; cursor: pointer;
+      transition: opacity .2s, transform .15s;
+      box-shadow: 0 0 20px rgba(124,58,237,.3);
+    }
+    .form-btn:hover { opacity: .88; transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--surface); border-top: 1px solid var(--border);
+      padding: 2.5rem 6vw;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-logo { font-weight: 900; font-size: 1.1rem; color: var(--white); letter-spacing: -.5px; }
+    .footer-logo span { background: linear-gradient(135deg, var(--violet), var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    footer p { color: var(--muted); font-size: .83rem; }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { color: var(--muted); text-decoration: none; font-size: .83rem; transition: color .2s; }
+    .footer-links a:hover { color: var(--white); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      nav { padding: 0 5vw; }
+      .portfolio-grid { grid-template-columns: 1fr; }
+      .port-card-wide { grid-column: span 1; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .process-steps::before { display: none; }
+      footer { flex-direction: column; text-align: center; }
+      .hero-social-proof { gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#"><span class="logo-dot"></span>Liko Studio</a>
+  <ul class="nav-links">
+    <li><a href="#services">שירותים</a></li>
+    <li><a href="#portfolio">עבודות</a></li>
+    <li><a href="#process">תהליך</a></li>
+    <li><a href="#contact">צור קשר</a></li>
+  </ul>
+  <a class="nav-btn" href="#contact">מתחילים?</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <span></span> סטודיו בוטיק לבניית אתרים
+    </div>
+    <h1>
+      האתר שלך הוא<br>
+      <span class="grad">איש המכירות</span><br>
+      הטוב ביותר שלך
+    </h1>
+    <p>
+      האתר שלך הוא איש המכירות הטוב ביותר שלך. עיצוב חד, טעינה מהירה, וחוויית משתמש שגורמת לאנשים לפעול.
+    </p>
+    <div class="hero-btns">
+      <a class="btn-glow" href="#contact">קבל הצעת מחיר ← </a>
+      <a class="btn-ghost" href="#portfolio">ראה עבודות שלנו</a>
+    </div>
+    <div class="hero-social-proof">
+      <div style="display:flex; align-items:center; gap:1rem;">
+        <div class="sp-avatars">
+          <span style="background:linear-gradient(135deg,#7c3aed,#a855f7)">ד</span>
+          <span style="background:linear-gradient(135deg,#ec4899,#f43f5e)">מ</span>
+          <span style="background:linear-gradient(135deg,#06b6d4,#3b82f6)">ש</span>
+          <span style="background:linear-gradient(135deg,#f59e0b,#ef4444)">ר</span>
+        </div>
+        <div class="sp-text">
+          <strong>60+ לקוחות מרוצים</strong>
+          <span>עסקים שגדלו אתנו</span>
+        </div>
+      </div>
+      <div class="sp-divider"></div>
+      <div class="sp-stat">
+        <strong>⚡ 7 ימים</strong>
+        <span>זמן אספקה ממוצע</span>
+      </div>
+      <div class="sp-divider"></div>
+      <div class="sp-stat">
+        <strong>★ 4.9</strong>
+        <span>דירוג לקוחות</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="s-label">מה אנחנו עושים</div>
+  <h2 class="s-title">שירותים שמניעים עסקים</h2>
+  <p class="s-sub">מהרעיון הראשון ועד האתר החי – מלווים אתכם בכל שלב.</p>
+  <div class="services-grid">
+    <div class="svc-card">
+      <div class="svc-icon-wrap p">🎨</div>
+      <h3>עיצוב אתרים מותאם</h3>
+      <p>עיצוב ייחודי לגמרי – לא תבניות. כל פרטיל מחושב כדי לייצג את המותג שלכם בצורה הטובה ביותר.</p>
+      <div class="svc-arrow">קרא עוד →</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-icon-wrap c">🛒</div>
+      <h3>חנויות אונליין</h3>
+      <p>WooCommerce ו-Shopify שמוכרים 24/7. ממשק ניהול נוח ותהליך רכישה שמרמה פחות.</p>
+      <div class="svc-arrow">קרא עוד →</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-icon-wrap s">⚡</div>
+      <h3>ביצועים ו-SEO</h3>
+      <p>אתרים שנטענים תוך שניה ומדורגים גבוה בגוגל. ה-Google PageSpeed שלכם יקפוץ.</p>
+      <div class="svc-arrow">קרא עוד →</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-icon-wrap m">📱</div>
+      <h3>מובייל-פירסט</h3>
+      <p>60%+ מהגלישה היא מהנייד. כל אתר שלנו נבנה מהמסך הקטן – ולא להפך.</p>
+      <div class="svc-arrow">קרא עוד →</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-icon-wrap b">🔗</div>
+      <h3>אינטגרציות ואוטומציות</h3>
+      <p>CRM, מייל, ווצאפ, תשלומים – כל המערכות שלכם מחוברות ועובדות ביחד.</p>
+      <div class="svc-arrow">קרא עוד →</div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-icon-wrap a">🛡️</div>
+      <h3>תחזוקה ותמיכה</h3>
+      <p>אתם לא לבד אחרי ה-Launch. עדכונים, גיבויים, אבטחה ושינויים מהירים – תמיד זמינים.</p>
+      <div class="svc-arrow">קרא עוד →</div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="s-label">עבודות נבחרות</div>
+  <h2 class="s-title">תוצאות שמדברות בעד עצמן</h2>
+  <p class="s-sub">אתרים שלקוחות אהבו – ובעיקר, שעבדו.</p>
+
+  <div class="portfolio-grid">
+    <!-- wide card -->
+    <div class="port-card port-card-wide port-card-1">
+      <div class="port-visual">
+        <div class="mock">
+          <div class="mock-bar">
+            <span style="background:#ff5f57"></span>
+            <span style="background:#febc2e"></span>
+            <span style="background:#28c840"></span>
+          </div>
+          <div class="mock-lines">
+            <div class="mock-line w90" style="height:10px; background:rgba(167,139,250,.4)"></div>
+            <div class="mock-line w60" style="height:7px"></div>
+            <div class="mock-line w80"></div>
+            <div class="mock-line w40"></div>
+          </div>
+        </div>
+        <div style="position:absolute; top:20px; right:20px; width:200px; height:120px; background:rgba(167,139,250,.06); border:1px solid rgba(167,139,250,.15); border-radius:8px;"></div>
+        <div class="port-overlay"><div class="port-overlay-btn">צפה בפרויקט</div></div>
+      </div>
+      <div class="port-info">
+        <div class="port-tag">אי-קומרס · פאשן</div>
+        <h3>Velvet – חנות אונליין לאופנה</h3>
+        <p>עלייה של 140% בהמרות תוך 3 חודשים מהשקה</p>
+      </div>
+    </div>
+
+    <div class="port-card port-card-2">
+      <div class="port-visual">
+        <div class="mock">
+          <div class="mock-bar">
+            <span style="background:#ff5f57"></span>
+            <span style="background:#febc2e"></span>
+            <span style="background:#28c840"></span>
+          </div>
+          <div class="mock-lines">
+            <div class="mock-line w80" style="background:rgba(6,182,212,.4); height:8px"></div>
+            <div class="mock-line w60"></div>
+            <div class="mock-line w90"></div>
+          </div>
+        </div>
+        <div class="port-overlay"><div class="port-overlay-btn">צפה בפרויקט</div></div>
+      </div>
+      <div class="port-info">
+        <div class="port-tag">תדמית · נדל"ן</div>
+        <h3>Prime Realty</h3>
+        <p>אתר תדמית יוקרתי עם מחשבון משכנתא חי</p>
+      </div>
+    </div>
+
+    <div class="port-card port-card-3">
+      <div class="port-visual">
+        <div class="mock">
+          <div class="mock-bar">
+            <span style="background:#ff5f57"></span>
+            <span style="background:#febc2e"></span>
+            <span style="background:#28c840"></span>
+          </div>
+          <div class="mock-lines">
+            <div class="mock-line w70" style="background:rgba(236,72,153,.35); height:8px; width:70%"></div>
+            <div class="mock-line w90"></div>
+            <div class="mock-line w50" style="width:50%"></div>
+          </div>
+        </div>
+        <div class="port-overlay"><div class="port-overlay-btn">צפה בפרויקט</div></div>
+      </div>
+      <div class="port-info">
+        <div class="port-tag">מסעדנות · תפריט דיגיטלי</div>
+        <h3>Bistro 42</h3>
+        <p>הזמנות אונליין, תפריט דינמי וניהול שולחנות</p>
+      </div>
+    </div>
+
+    <div class="port-card port-card-4">
+      <div class="port-visual">
+        <div class="mock">
+          <div class="mock-bar">
+            <span style="background:#ff5f57"></span>
+            <span style="background:#febc2e"></span>
+            <span style="background:#28c840"></span>
+          </div>
+          <div class="mock-lines">
+            <div class="mock-line w80" style="background:rgba(52,211,153,.35); height:8px"></div>
+            <div class="mock-line w60"></div>
+            <div class="mock-line w90"></div>
+          </div>
+        </div>
+        <div class="port-overlay"><div class="port-overlay-btn">צפה בפרויקט</div></div>
+      </div>
+      <div class="port-info">
+        <div class="port-tag">קליניקה · בריאות</div>
+        <h3>GreenMed Clinic</h3>
+        <p>מערכת קביעת תורים + פורטל מטופלים</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="s-label">איך זה עובד</div>
+  <h2 class="s-title">מ-0 לאתר חי תוך 7 ימים</h2>
+  <p class="s-sub">תהליך מוכח שעובד שוב ושוב.</p>
+  <div class="process-steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>שיחת גילוי</h3>
+      <p>מבינים את העסק, הקהל, והמטרות. 30 דקות שמשנות הכל.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>אסטרטגיה ועיצוב</h3>
+      <p>מציגים מבנה ועיצוב ראשוני. אפשר לשנות עד שאוהבים.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>פיתוח</h3>
+      <p>בונים מהיר ומדויק – עם עדכונים שוטפים אליכם.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <h3>השקה ותמיכה</h3>
+      <p>עולים לאוויר ומלווים אתכם 30 יום ראשונים בחינם.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section>
+  <div class="s-label">לקוחות מספרים</div>
+  <h2 class="s-title">הם האמינו בנו. ואנחנו סיפקנו.</h2>
+  <div class="testimonials-grid">
+    <div class="t-card">
+      <div class="t-stars">★★★★★</div>
+      <p class="t-text">"קיבלתי אתר שנראה כאילו עשוי על ידי סוכנות גדולה, במחיר ובזמן שלא האמנתי שאפשרי. המכירות עלו ב-80% תוך חודשיים."</p>
+      <div class="t-author">
+        <div class="t-avatar" style="background:linear-gradient(135deg,#7c3aed,#a855f7)">מ.ג</div>
+        <div>
+          <div class="t-name">מיכל גולן</div>
+          <div class="t-role">בעלת בוטיק תכשיטים, תל אביב</div>
+        </div>
+      </div>
+    </div>
+    <div class="t-card">
+      <div class="t-stars">★★★★★</div>
+      <p class="t-text">"הגעתי עם אפס ידע ויצאתי עם אתר מרשים ומערכת ניהול שאני מבין. הצוות סבלני, מקצועי ותמיד זמין לשאלות."</p>
+      <div class="t-author">
+        <div class="t-avatar" style="background:linear-gradient(135deg,#06b6d4,#3b82f6)">א.ר</div>
+        <div>
+          <div class="t-name">אייל רביד</div>
+          <div class="t-role">מאמן כושר אישי, חיפה</div>
+        </div>
+      </div>
+    </div>
+    <div class="t-card">
+      <div class="t-stars">★★★★★</div>
+      <p class="t-text">"Liko Studio הפכו את הפנטזיה שלי לאתר אמיתי. הם הבינו בדיוק מה אני רוצה, אפילו לפני שהסברתי עד הסוף."</p>
+      <div class="t-author">
+        <div class="t-avatar" style="background:linear-gradient(135deg,#ec4899,#f43f5e)">ש.ב</div>
+        <div>
+          <div class="t-name">שירה בן-דוד</div>
+          <div class="t-role">פסיכולוגית קלינית, ירושלים</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band">
+  <div class="cta-band-inner">
+    <h2>מוכן לאתר שעובד בשבילך?</h2>
+    <p>שיחת ייעוץ ראשונה – חינם ובלי התחייבות. בוא נראה מה אפשר לבנות.</p>
+    <a class="btn-glow" href="#contact" style="font-size:1.05rem; padding:1rem 2.5rem;">
+      קבע שיחה עכשיו →
+    </a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="s-label">צור קשר</div>
+  <h2 class="s-title">בואו נתחיל</h2>
+  <p class="s-sub">ממלאים, ואנחנו חוזרים תוך 24 שעות עם הצעת מחיר.</p>
+  <div class="contact-grid">
+    <div class="contact-details">
+      <h3>דברו איתנו ישירות</h3>
+      <div class="cinfo-list">
+        <div class="cinfo-item">
+          <div class="cinfo-icon">📱</div>
+          <div class="cinfo-text">
+            <strong>וואטסאפ / טלפון</strong>
+            <span>050-123-4567</span>
+          </div>
+        </div>
+        <div class="cinfo-item">
+          <div class="cinfo-icon">✉️</div>
+          <div class="cinfo-text">
+            <strong>אימייל</strong>
+            <span>hello@liko.studio</span>
+          </div>
+        </div>
+        <div class="cinfo-item">
+          <div class="cinfo-icon">📍</div>
+          <div class="cinfo-text">
+            <strong>בסיס</strong>
+            <span>תל אביב – גלובלי</span>
+          </div>
+        </div>
+        <div class="cinfo-item">
+          <div class="cinfo-icon">⏱️</div>
+          <div class="cinfo-text">
+            <strong>זמן תגובה</strong>
+            <span>עד 24 שעות</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form class="contact-form" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <div class="fg">
+          <label>שם מלא</label>
+          <input type="text" placeholder="ישראל ישראלי" required />
+        </div>
+        <div class="fg">
+          <label>טלפון</label>
+          <input type="tel" placeholder="050-000-0000" required />
+        </div>
+      </div>
+      <div class="fg">
+        <label>אימייל</label>
+        <input type="email" placeholder="you@example.com" required />
+      </div>
+      <div class="fg">
+        <label>מה אתם צריכים?</label>
+        <select>
+          <option>אתר תדמית חדש</option>
+          <option>חנות אונליין</option>
+          <option>שיפוץ אתר קיים</option>
+          <option>SEO ושיפור ביצועים</option>
+          <option>לא בטוח – בואו נדבר</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>תקציב משוער</label>
+        <select>
+          <option>עד 3,000 ₪</option>
+          <option>3,000 – 8,000 ₪</option>
+          <option>8,000 – 20,000 ₪</option>
+          <option>20,000 ₪+</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>ספרו לנו עוד</label>
+        <textarea rows="3" placeholder="מה העסק, מה המטרה, מה הדד-ליין..."></textarea>
+      </div>
+      <button type="submit" class="form-btn">שלח ונתחיל לבנות ←</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Liko<span> Studio</span></div>
+  <p style="color:var(--muted); font-size:.82rem;">© 2025 Liko Studio · בניית אתרים שמוכרים</p>
+  <div class="footer-links">
+    <a href="#services">שירותים</a>
+    <a href="#portfolio">פורטפוליו</a>
+    <a href="#contact">צור קשר</a>
+  </div>
+</footer>
+
+<script>
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-btn');
+    btn.textContent = '✓ קיבלנו! נחזור אליכם בקרוב';
+    btn.style.background = 'linear-gradient(135deg, #059669, #10b981)';
+    btn.style.boxShadow = '0 0 20px rgba(16,185,129,.4)';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = 'שלח ונתחיל לבנות ←';
+      btn.style.background = '';
+      btn.style.boxShadow = '';
+      btn.disabled = false;
+      e.target.reset();
+    }, 4000);
+  }
+
+  // Nav active
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (scrollY >= s.offsetTop - 90) cur = s.id; });
+    links.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + cur ? '#a855f7' : '';
+    });
+  });
+
+  // Subtle card tilt on hover
+  document.querySelectorAll('.svc-card, .t-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - .5;
+      const y = (e.clientY - r.top)  / r.height - .5;
+      card.style.transform = `perspective(600px) rotateY(${x * 4}deg) rotateX(${-y * 4}deg)`;
+    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+  });
+</script>
+</body>
+</html>

@@ -423,83 +423,6 @@
     }
     .form-btn:hover { opacity: .88; transform: translateY(-1px); }
 
-    /* ── PRICING ── */
-    .pricing { background: var(--bg); }
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem; margin-top: 3.5rem; align-items: start;
-    }
-    .price-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--r); padding: 2.4rem 2rem;
-      position: relative; overflow: hidden;
-      transition: transform .25s, border-color .25s, box-shadow .25s;
-      display: flex; flex-direction: column;
-    }
-    .price-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(124,58,237,.4);
-      box-shadow: 0 20px 60px rgba(0,0,0,.35);
-    }
-    .price-card.featured {
-      border-color: rgba(124,58,237,.55);
-      background: linear-gradient(160deg, #1a1030 0%, var(--card) 60%);
-      box-shadow: 0 0 40px rgba(124,58,237,.18);
-    }
-    .price-badge {
-      position: absolute; top: 1.2rem; left: 50%; transform: translateX(-50%);
-      background: linear-gradient(135deg, var(--purple), var(--pink));
-      color: var(--white); font-size: .72rem; font-weight: 700;
-      padding: .25rem .9rem; border-radius: 50px; white-space: nowrap;
-      letter-spacing: .5px;
-    }
-    .price-card.featured { padding-top: 3.2rem; }
-    .price-period {
-      font-size: .8rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 1.5px; color: var(--violet); margin-bottom: .6rem;
-    }
-    .price-card h3 {
-      font-size: 1.25rem; font-weight: 800; color: var(--white); margin-bottom: 1.4rem;
-    }
-    .price-build {
-      display: flex; align-items: baseline; gap: .35rem; margin-bottom: .3rem;
-    }
-    .price-build strong {
-      font-size: 2.6rem; font-weight: 900; color: var(--white); line-height: 1;
-    }
-    .price-build span { font-size: 1rem; color: var(--muted); }
-    .price-maintenance {
-      font-size: .88rem; color: var(--muted); margin-bottom: 2rem;
-      padding-bottom: 1.6rem; border-bottom: 1px solid var(--border);
-    }
-    .price-maintenance strong { color: var(--violet); }
-    .price-features { list-style: none; display: flex; flex-direction: column; gap: .75rem; margin-bottom: 2rem; flex: 1; }
-    .price-features li {
-      font-size: .88rem; color: var(--text);
-      display: flex; align-items: center; gap: .6rem;
-    }
-    .price-features li::before {
-      content: '✓'; color: #34d399; font-weight: 700; font-size: .85rem; flex-shrink: 0;
-    }
-    .price-btn {
-      display: block; text-align: center;
-      padding: .85rem; border-radius: 8px;
-      font-family: 'Heebo', sans-serif; font-size: .95rem; font-weight: 700;
-      text-decoration: none; transition: opacity .2s, transform .15s;
-    }
-    .price-btn-outline {
-      border: 1px solid rgba(124,58,237,.5); color: var(--violet);
-      background: rgba(124,58,237,.07);
-    }
-    .price-btn-outline:hover { opacity: .8; transform: translateY(-1px); }
-    .price-btn-glow {
-      background: linear-gradient(135deg, var(--purple), var(--pink));
-      color: var(--white);
-      box-shadow: 0 0 24px rgba(124,58,237,.4);
-    }
-    .price-btn-glow:hover { opacity: .88; transform: translateY(-1px); }
-
     /* ── FOOTER ── */
     footer {
       background: var(--surface); border-top: 1px solid var(--border);
@@ -537,8 +460,7 @@
     <li><a href="#services">שירותים</a></li>
     <li><a href="#portfolio">עבודות</a></li>
     <li><a href="#process">תהליך</a></li>
-    <li><a href="#pricing">מחירים</a></li>
-    <li><a href="#contact">צור קשר</a></li>
+<li><a href="#contact">צור קשר</a></li>
   </ul>
   <a class="nav-btn" href="#contact">מתחילים?</a>
 </nav>
@@ -807,71 +729,6 @@
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- PRICING -->
-<section class="pricing" id="pricing">
-  <div class="s-label">מחירים</div>
-  <h2 class="s-title">בחרו את החבילה שמתאימה לכם</h2>
-  <p class="s-sub">שלושה מסלולים גמישים – בנייה פעם אחת, תחזוקה שוטפת בלי הפתעות.</p>
-  <div class="pricing-grid">
-
-    <!-- בסיסית -->
-    <div class="price-card">
-      <div class="price-period">3 חודשים</div>
-      <h3>חבילה בסיסית</h3>
-      <div class="price-build">
-        <strong>₪2,500</strong>
-        <span>בנייה</span>
-      </div>
-      <div class="price-maintenance">+ <strong>₪350</strong> / חודש תחזוקה</div>
-      <ul class="price-features">
-        <li>עדכוני תוכן שוטפים</li>
-        <li>אחסון ודומיין כלולים</li>
-        <li>גיבויים אוטומטיים</li>
-        <li>תמיכה טכנית</li>
-      </ul>
-      <a class="price-btn price-btn-outline" href="#contact">צור קשר →</a>
-    </div>
-
-    <!-- בינונית (מומלצת) -->
-    <div class="price-card featured">
-      <div class="price-badge">הכי פופולרי</div>
-      <div class="price-period">6 חודשים</div>
-      <h3>חבילה בינונית</h3>
-      <div class="price-build">
-        <strong>₪1,800</strong>
-        <span>בנייה</span>
-      </div>
-      <div class="price-maintenance">+ <strong>₪300</strong> / חודש תחזוקה</div>
-      <ul class="price-features">
-        <li>עדכוני תוכן שוטפים</li>
-        <li>אחסון ודומיין כלולים</li>
-        <li>גיבויים אוטומטיים</li>
-        <li>תמיכה טכנית</li>
-      </ul>
-      <a class="price-btn price-btn-glow" href="#contact">צור קשר →</a>
-    </div>
-
-    <!-- שנתית -->
-    <div class="price-card">
-      <div class="price-period">12 חודשים</div>
-      <h3>חבילה שנתית</h3>
-      <div class="price-build">
-        <strong>₪1,200</strong>
-        <span>בנייה</span>
-      </div>
-      <div class="price-maintenance">+ <strong>₪250</strong> / חודש תחזוקה</div>
-      <ul class="price-features">
-        <li>עדכוני תוכן שוטפים</li>
-        <li>אחסון ודומיין כלולים</li>
-        <li>גיבויים אוטומטיים</li>
-        <li>תמיכה טכנית</li>
-      </ul>
-      <a class="price-btn price-btn-outline" href="#contact">צור קשר →</a>
-    </div>
-
   </div>
 </section>
 

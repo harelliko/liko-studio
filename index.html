@@ -783,7 +783,7 @@
       </div>
     </div>
 
-    <form class="contact-form" onsubmit="handleSubmit(event)">
+    <form class="contact-form" action="https://formspree.io/f/xeennwgo" method="POST">
       <div class="form-row">
         <div class="fg">
           <label>שם מלא</label>
@@ -838,22 +838,6 @@
 </footer>
 
 <script>
-  function handleSubmit(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('.form-btn');
-    btn.textContent = '✓ קיבלנו! נחזור אליכם בקרוב';
-    btn.style.background = 'linear-gradient(135deg, #059669, #10b981)';
-    btn.style.boxShadow = '0 0 20px rgba(16,185,129,.4)';
-    btn.disabled = true;
-    setTimeout(() => {
-      btn.textContent = 'שלח ונתחיל לבנות ←';
-      btn.style.background = '';
-      btn.style.boxShadow = '';
-      btn.disabled = false;
-      e.target.reset();
-    }, 4000);
-  }
-
   // Nav active
   const sections = document.querySelectorAll('section[id]');
   const links = document.querySelectorAll('.nav-links a');

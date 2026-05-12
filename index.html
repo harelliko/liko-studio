@@ -787,20 +787,20 @@
       <div class="form-row">
         <div class="fg">
           <label>שם מלא</label>
-          <input type="text" placeholder="ישראל ישראלי" required />
+          <input type="text" name="name" placeholder="ישראל ישראלי" required />
         </div>
         <div class="fg">
           <label>טלפון</label>
-          <input type="tel" placeholder="050-000-0000" required />
+          <input type="tel" name="phone" placeholder="050-000-0000" required />
         </div>
       </div>
       <div class="fg">
         <label>אימייל</label>
-        <input type="email" placeholder="you@example.com" required />
+        <input type="email" name="email" placeholder="you@example.com" required />
       </div>
       <div class="fg">
         <label>מה אתם צריכים?</label>
-        <select>
+        <select name="service">
           <option>אתר תדמית חדש</option>
           <option>דף נחיתה</option>
           <option>שיפוץ אתר קיים</option>
@@ -810,7 +810,7 @@
       </div>
       <div class="fg">
         <label>תקציב משוער</label>
-        <select>
+        <select name="budget">
           <option>עד 3,000 ₪</option>
           <option>3,000 – 8,000 ₪</option>
           <option>8,000 – 20,000 ₪</option>
@@ -819,7 +819,7 @@
       </div>
       <div class="fg">
         <label>ספרו לנו עוד</label>
-        <textarea rows="3" placeholder="מה העסק, מה המטרה, מה הדד-ליין..."></textarea>
+        <textarea name="message" rows="3" placeholder="מה העסק, מה המטרה, מה הדד-ליין..."></textarea>
       </div>
       <button type="submit" class="form-btn">שלח ונתחיל לבנות ←</button>
     </form>

@@ -426,9 +426,11 @@
     /* ── FOOTER ── */
     footer {
       background: var(--surface); border-top: 1px solid var(--border);
-      padding: 2.5rem 6vw;
+      padding: 2rem 6vw;
+    }
+    .footer-main {
       display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 1rem;
+      flex-wrap: wrap; gap: 1rem; margin-bottom: 1.2rem;
     }
     .footer-logo { font-weight: 900; font-size: 1.1rem; color: var(--white); letter-spacing: -.5px; }
     .footer-logo span { background: linear-gradient(135deg, var(--violet), var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
@@ -436,6 +438,14 @@
     .footer-links { display: flex; gap: 1.5rem; }
     .footer-links a { color: var(--muted); text-decoration: none; font-size: .83rem; transition: color .2s; }
     .footer-links a:hover { color: var(--white); }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: .8rem;
+      padding-top: 1rem; border-top: 1px solid var(--border);
+    }
+    .footer-legal { display: flex; gap: 1.2rem; }
+    .footer-legal a { color: rgba(255,255,255,.25); text-decoration: none; font-size: .78rem; transition: color .2s; }
+    .footer-legal a:hover { color: var(--muted); }
 
     /* ── MOBILE ── */
     @media (max-width: 768px) {
@@ -983,12 +993,20 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">Liko<span> Studio</span></div>
-  <p style="color:var(--muted); font-size:.82rem;">© 2025 Liko Studio · בניית אתרים שמוכרים</p>
-  <div class="footer-links">
-    <a href="#services">שירותים</a>
-    <a href="#portfolio">פורטפוליו</a>
-    <a href="#contact">צור קשר</a>
+  <div class="footer-main">
+    <div class="footer-logo">Liko<span> Studio</span></div>
+    <div class="footer-links">
+      <a href="#services">שירותים</a>
+      <a href="#portfolio">פורטפוליו</a>
+      <a href="#contact">צור קשר</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Liko Studio · בניית אתרים שמוכרים</p>
+    <div class="footer-legal">
+      <a href="accessibility.html">הצהרת נגישות</a>
+      <a href="privacy.html">מדיניות פרטיות</a>
+    </div>
   </div>
 </footer>
 
